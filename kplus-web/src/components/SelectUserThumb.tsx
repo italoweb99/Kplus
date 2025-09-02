@@ -28,7 +28,7 @@ return(
     <div className="grid grid-cols-8 gap-4">
         {
     thumbs?.map((thumb)=>(
-       <img src={thumb.thumb_url} key={thumb.id_user_thumb} className="h-20 w-20 rounded-full object-cover"onClick={()=>onClose({id:thumb.id_user_thumb,url:thumb.thumb_url})}/>
+       <img src={`http://localhost:5000${thumb.thumb_url}`} key={thumb.id_user_thumb} className="h-20 w-20 rounded-full object-cover"onClick={()=>onClose({id:thumb.id_user_thumb,url:thumb.thumb_url})}/>
     )
 
     )

@@ -12,6 +12,7 @@ const Usuario = () =>{
     const [user,setUser] = useState(null);
     const nav = useNavigate();
     const token = localStorage.getItem('token');
+
     const loadUsers = () =>{
         const token = localStorage.getItem('token');
         const conta = localStorage.getItem('idConta');
@@ -69,7 +70,7 @@ return(
        users.map((user,index)=>(
         <div key={index} onClick={()=>handleClick(user)}>
         <div className=" h-40 w-40 overflow-hidden rounded-full">
-            <img src={user.thumb_url} className="object-cover h-full"/>
+            <img src={`http://localhost:5000${user.thumb_url}`} className="object-cover h-full"/>
         </div>
         <p>{user.nome}</p>
         </div>

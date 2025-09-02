@@ -17,6 +17,7 @@ const optCors = {
 app.use(cors(optCors));
 // Configurar conexão com o banco de dados PostgreSQL
 app.use('/thumbs', express.static(path.join(__dirname, 'public/thumbs')));
+app.use('/Users',express.static(path.join(__dirname, 'public/Users')))
 app.use(express.json());
 const jwtSecrect = 'AnyRamdonWord';
 app.use('/gia',giaRoute)

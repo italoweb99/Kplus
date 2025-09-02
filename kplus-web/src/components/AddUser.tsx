@@ -90,7 +90,7 @@ return(
      <SelectUserThumb onClose = {handleClose}/>
     )
 }
-<img src={formData.thumb_url} className="h-20 w-20 rounded-full object-cover" onClick={()=>setOpenThumbs(true)}/>
+<img src={`http://localhost:5000${formData.thumb_url}`} className="h-20 w-20 rounded-full object-cover" onClick={()=>setOpenThumbs(true)}/>
 <input type="text" placeholder="nome" name="nome" value={formData.nome} onChange={handleChange}/>
 <div className="space-x-2">
     <button onClick = {()=>onClose("cancelar")}>Cancelar</button>
