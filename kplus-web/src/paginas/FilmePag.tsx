@@ -53,7 +53,7 @@ else{
 return(
     <div className="h-screen">
      <button onClick = {()=>addFav()}className="bg-blue-500">adicionar aos favoritos</button>
-    <img src={data?.thumb_url}/>
+    <img src={`http://localhost:5000${data?.thumb_url}`}/>
     <h1>{data?.titulo}</h1>
     <p>{data?.ano_lancamento}</p>
    <p>{data?.genero.join(", ")}</p>

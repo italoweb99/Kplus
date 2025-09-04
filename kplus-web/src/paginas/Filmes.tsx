@@ -29,21 +29,27 @@ axiosInstance.get(`/filmes/categoria/${categoria}`)
    
     <div>
     <button className={btnStyle}onClick={()=>handleCat('Todos')}>Todos</button>
-    <button className={btnStyle} onClick={()=>handleCat('Comedia')}>Comedia</button>
-    <button className={btnStyle} onClick={()=>handleCat('Animação')}>Animação</button>
-    <button className={btnStyle} onClick={()=>handleCat('Drama')}>Drama</button>
-    <button className={btnStyle} onClick={()=>handleCat('Ação')}>Ação</button>
-    <button className={btnStyle} onClick={()=>handleCat('Aventura')}>Aventura</button>
-    <button className={btnStyle} onClick={()=>handleCat('Ficção Científica')}>Ficção Científica</button>
-    <button className={btnStyle} onClick={()=>handleCat('Romance')}>Romance</button>
-    <button className={btnStyle} onClick={()=>handleCat('Fantasia')}>Fantasia</button>
+    <button className={btnStyle} onClick={()=>handleCat('comédia')}>Comedia</button>
+    <button className={btnStyle} onClick={()=>handleCat('animação')}>Animação</button>
+    <button className={btnStyle} onClick={()=>handleCat('drama')}>Drama</button>
+    <button className={btnStyle} onClick={()=>handleCat('ação')}>Ação</button>
+    <button className={btnStyle} onClick={()=>handleCat('aventura')}>Aventura</button>
+    <button className={btnStyle} onClick={()=>handleCat('ficção científica')}>Ficção Científica</button>
+    <button className={btnStyle} onClick={()=>handleCat('romance')}>Romance</button>
+    <button className={btnStyle} onClick={()=>handleCat('fantasia')}>Fantasia</button>
+    <button className={btnStyle} onClick={()=>handleCat('suspense')}>Suspense</button>
+    <button className={btnStyle} onClick={()=>handleCat('mistério')}>Mistério</button>
+    <button className={btnStyle} onClick={()=>handleCat('crime')}>Crime</button>
+    <button className={btnStyle} onClick={()=>handleCat('terror')}>Terror</button>
+    <button className={btnStyle} onClick={()=>handleCat('biografia')}>Biografia</button>
+    <button className={btnStyle} onClick={()=>handleCat('musical')}>Musical</button>
     </div>
     <div>
     <div className='grid grid-cols-6 gap-4 m-2'>
       {filmes.map((filme)=>(
           <div className="flex flex-col items-center justify-center" key={filme.id_filme}>
             <Link to = {`/filmes/${filme.id_filme}`}>
-          <img src={filme.thumb_url} className="h-56 rounded-lg"/>
+          <img src={`http://localhost:5000${filme.thumb_url}`} className="h-56 rounded-lg"/>
           </Link>
           <h1 className='m-2 line-clamp-1'>{filme.titulo}</h1>
           </div>  
