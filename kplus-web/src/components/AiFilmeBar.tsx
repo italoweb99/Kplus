@@ -25,7 +25,8 @@ const AiFilmeBar = () => {
           descricao: descricao,
         });
         setFilmes(response.data);
-        setShowResults(true); // Exibe a caixa de resultados
+        setShowResults(true);
+         // Exibe a caixa de resultados
       } catch (err) {
         console.error("Erro ao buscar filmes:", err);
         // Opcional: mostrar uma mensagem de erro para o usuário
@@ -61,11 +62,12 @@ const AiFilmeBar = () => {
       {/* Barra de Pesquisa e Resultados */}
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
-          <div className=" max-w-2xl transform transition-all duration-300 ease-in-out scale-100">
+          <div className=" fixed bottom-16 w-4/6  flex flex-col justify-end items-center transform transition-all duration-300 ease-in-out scale-100">
             {/* Cabeçalho da barra de pesquisa com botão de fechar */}
-          
+           <div className=" p-4 border max-w-4xl  min-w-2xl border-gray-200 rounded-lg bg-gray-50 max-h-5xl overflow-y-auto">
              {showResults && filmes.length > 0 && (
-              <div className="mt-6 p-4 border border-gray-200 rounded-lg bg-gray-50 max-h-96 overflow-y-auto">
+             
+                <div className="p-4 max-w-4xl ">
                 <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">
                   Esses são os filmes mais próximos à sua descrição:
                 </h3>
@@ -75,7 +77,7 @@ const AiFilmeBar = () => {
                   height={70}
                   titulos={true}
                 />
-              </div>
+                </div>
             )}
 
             {showResults && filmes.length === 0 && (
@@ -89,8 +91,11 @@ const AiFilmeBar = () => {
                 Buscando filmes...
               </div>
             )}
+              
+            
+            </div>
             {/* Barra de Pesquisa */}
-            <div className="flex bg-white p-1 rounded-full items-center space-x-1 mt-4">
+            <div className="flex w-full bg-white p-1 rounded-full items-center space-x-1 mt-4">
             <FaTimes className="mx-2"onClick={()=>{setIsOpen(false)}}/>
               <input
                 type="text"
@@ -136,7 +141,7 @@ const AiFilmeBar = () => {
               </button>
             </div>
 
-            {/* Caixa de Exibição de Resultados */}
+  
            
           </div>
         </div>
