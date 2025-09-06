@@ -1,9 +1,16 @@
+import { useState } from "react"
 import AiFilmeBar from "../components/AiFilmeBar"
+import GenSelecter from "../components/GenSelecter"
 
 const TesteIa = () =>{
+const [genero,setGenero] = useState()
+const handleClick =(e:any) =>{
+    setGenero(e)
+    console.log(genero)
+}
 return(
     <>
-    <h1>TESTE</h1>
+    <GenSelecter Out={handleClick}/>
     <AiFilmeBar/>
     </>
 )

@@ -545,3 +545,13 @@ app.get('/get-video-url/:tipo/:id', authenticateToken, async (req, res) => {
   }
 });
 
+app.get('/generos',async(req,res)=>{
+  try{
+  const result = await pool.query('SELECT* FROM tb_genero ORDER BY id_genero ASC')
+  res.status(200).json(result.rows)
+  }
+  catch(err){
+    console.log(err)
+    res.status(500).json({message: 'Erro ao obter generos'})
+  }
+})

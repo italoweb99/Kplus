@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
+import GenSelecter from '../components/GenSelecter';
 interface Serie{
   id_serie:number;
   titulo: string;
@@ -9,7 +10,6 @@ interface Serie{
 const Series = () => {
   const [categoria,setCategoria] = useState('Todos');
   const [series,setSeries] = useState<Serie[]>([]);
-  const btnStyle = "bg-blue-300 p-2 m-2 text-white text-md rounded-md";
   useEffect(()=>{
 axiosInstance.get(`/series/categoria/${categoria}`)
 .then(response => {
@@ -27,15 +27,7 @@ axiosInstance.get(`/series/categoria/${categoria}`)
   <div>
    
     <div>
-    <button className={btnStyle}onClick={()=>handleCat('Todos')}>Todos</button>
-    <button className={btnStyle} onClick={()=>handleCat('comédia')}>Comedia</button>
-    <button className={btnStyle} onClick={()=>handleCat('animação')}>Animação</button>
-    <button className={btnStyle} onClick={()=>handleCat('drama')}>Drama</button>
-    <button className={btnStyle} onClick={()=>handleCat('ação')}>Ação</button>
-    <button className={btnStyle} onClick={()=>handleCat('aventura')}>Aventura</button>
-    <button className={btnStyle} onClick={()=>handleCat('ficção científica')}>Ficção Científica</button>
-    <button className={btnStyle} onClick={()=>handleCat('romance')}>Romance</button>
-    <button className={btnStyle} onClick={()=>handleCat('fantasia')}>Fantasia</button>
+   <GenSelecter Out={handleCat}/>
     </div>
     <div>
     <div className='grid grid-cols-6 gap-4 m-2'>

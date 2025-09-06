@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SelectTemp from "../components/SelectTemp";
 import axiosInstance from "../axiosConfig";
 interface Series{
@@ -14,6 +14,7 @@ const SeriesPag = () =>{
     const [serie,setSerie] = useState<Series>();
     const [loading,setLoading] = useState(true);
     const {id} = useParams();
+    const nav = useNavigate();
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     const isLogedin = !!token && !!user;
@@ -30,14 +31,19 @@ const SeriesPag = () =>{
      })
     
     },[id])
+    
    const addFav = () =>{
+    if(token){
        axiosInstance.post(`/${user}/favoritos/serie/${id}`,{},{
         headers:{
             Authorization: `Bearer ${token}`
         }
        })
-       .then(response => console.log(response.data.message))
        .catch(error => console.log(error.response.data.error))
+    }
+    else{
+        nav('/login')
+    }
    }
     if(loading){
         <p>Carregando</p>

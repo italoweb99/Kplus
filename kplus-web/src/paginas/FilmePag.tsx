@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useParams,useNavigate } from "react-router-dom"
 import axiosInstance from "../axiosConfig";
 interface Data{
     titulo: string;
@@ -12,6 +12,7 @@ interface Data{
 }
 const FilmePag = () =>{
     const params = useParams();
+    const nav = useNavigate();
     const id = params.id;
     const[data,setData] = useState<Data>();
     const[loading,setLoading] = useState(true);
@@ -37,11 +38,10 @@ const FilmePag = () =>{
             Authorization: `Bearer ${token}`
         }
        })
-       .then(response => console.log(response.data.message))
        .catch(error => console.log(error.response.data.error))
     }
     else{
-        console.log("asas");
+       nav('/login')
     }
    }
 if(loading){
