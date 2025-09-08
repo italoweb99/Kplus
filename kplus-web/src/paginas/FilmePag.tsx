@@ -33,7 +33,7 @@ const FilmePag = () =>{
     //console.log(data.genero);
    const addFav = () =>{
     if(token){
-       axiosInstance.post(`/${user}/favoritos/filmes/${id}`,{},{
+       axiosInstance.post(`/favoritos/${user}/filmes/${id}`,{},{
         headers:{
             Authorization: `Bearer ${token}`
         }

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import CaroselExtended from "./CaroselExtended"
 
 import axiosInstance from "../axiosConfig";
 import Carrossel2 from "./Carossel2";
@@ -9,7 +8,7 @@ const FavCar = ({user}:{user: string}) => {
      const [fav,setFav] = useState(null);
      const token = localStorage.getItem('token');
      const loadUsers = () =>{
-        axiosInstance.get(`${user}/favoritos`,{
+        axiosInstance.get(`/favoritos/${user}`,{
             headers:{
                 Authorization: `Bearer ${token}`
             }
@@ -34,7 +33,7 @@ const FavCar = ({user}:{user: string}) => {
         console.log(e);
         const {id,tipo} = e
         console.log(id,tipo);
-        axiosInstance.delete(`/${user}/favoritos`,{
+        axiosInstance.delete(`/favoritos/${user}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             },

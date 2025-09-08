@@ -31,8 +31,12 @@ const PlayerPag = () =>{
       
         useEffect(() => {
           const token = localStorage.getItem('token');
-          axiosInstance.get(`/get-video-url/${tipo}/${id}`, {
+          axiosInstance.get(`/reproduzir/get-video-url`, {
             headers: { Authorization: `Bearer ${token}` },
+            params:{
+              tipo: tipo,
+              id: id
+            }
           })
             .then(response => {
               setVideoUrl(response.data.signedUrl);

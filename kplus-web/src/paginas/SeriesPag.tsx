@@ -23,7 +23,7 @@ const SeriesPag = () =>{
      .then(response => {
         setSerie(response.data);
         setLoading(false);
-        console.log(response.data);
+        //console.log(response.data);
      })
      .catch(error => {
        console.log("Erro ao buscar serie: ",error);
@@ -34,7 +34,7 @@ const SeriesPag = () =>{
     
    const addFav = () =>{
     if(token){
-       axiosInstance.post(`/${user}/favoritos/serie/${id}`,{},{
+       axiosInstance.post(`/favoritos/${user}/serie/${id}`,{},{
         headers:{
             Authorization: `Bearer ${token}`
         }

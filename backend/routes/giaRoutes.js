@@ -66,6 +66,7 @@ LEFT JOIN tb_genero g ON fg.id_genero = g.id_genero AND g.nm_genero = ANY($2)
 GROUP BY f.id_filme
 HAVING COUNT(Distinct pk.termo) >0 OR COUNT(distinct g.nm_genero) > 0
 ORDER BY tMatch desc
+LIMIT 5
 `,[palavras_chave,generos])
 const filmes = result.rows.map(row => {
     const filme = {

@@ -21,7 +21,7 @@ const SelectUserThumb = ({onClose}:SelectUserThumbProps) =>{
         .catch(error =>{
             console.log("Erro ao carregar thumbs",error);
         })
-    })
+    },[])
 return(
     <div className="fixed z-50 w-screen bg-white h-screen flex items-center justify-center">
     {!loading &&

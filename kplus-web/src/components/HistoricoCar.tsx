@@ -1,15 +1,14 @@
 
 import { useEffect, useState } from "react";
-import CaroselExtended from "./CaroselExtended";
 import axiosInstance from "../axiosConfig";
 import Carrossel2 from "./Carossel2";
 
 const HistoricoCar =({user}:{user: string})=>{
-    const [hist,setHist] = useState(null);
+    const [hist,setHist] = useState<any[]>();
         const [loading,setLoading] = useState(true);
         const token= localStorage.getItem('token');
     useEffect(()=>{
-        axiosInstance.get(`user/${user}/historico`,{
+        axiosInstance.get(`/historico/${user}`,{
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -25,10 +24,14 @@ const HistoricoCar =({user}:{user: string})=>{
     },[]);
     return(
         <>
-         <p>Continuar assistindo</p>
+
         { 
-            !loading &&
+            !loading && user && hist && hist.length > 0 && (
+                <>
+        <p>Continuar assistindo</p>
         <Carrossel2  obj = {hist} titulos = {true} contAssist = {true}/>   
+        </>
+            )
         }
         </>
     );

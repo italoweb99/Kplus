@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosConfig";
 import AddUser from "../components/AddUser";
-
+//TODO:adicionar sinalização de editar usuario
 const Usuario = () =>{
     const [users,setUsers] = useState<{user: string; nome: string; thumb_url: string}[]>([]);
     const [isAddOpen,setAddOpen] = useState(false);

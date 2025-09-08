@@ -27,14 +27,14 @@ const token = localStorage.getItem('token');
 //const isLogedin = !!token && !!user;
 useEffect(()=>{
     if(user!= null)  {
-        axiosInstance.get(`${user}/series/temporadas/${temporada}`,{
+        axiosInstance.get(`/series/temporadas/${temporada}/${user}`,{
             headers:{
                 Authorization: `Bearer ${token}`
             }
         })
         .then(response => {
            setEps(response.data);
-           console.log(user);
+           //console.log(user);
            setLoading(false);
         })
         .catch(error =>{
