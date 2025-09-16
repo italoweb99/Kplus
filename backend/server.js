@@ -5,7 +5,7 @@ const app = express();
 const {authenticateToken} = require('./controllers/auth')
 const port = 5000;
 const cors = require('cors');
-const fs = require('fs');
+
 const path = require('path');
 const seriesRoutes = require('./routes/seriesRoutes')
 const cadastroRoutes =require('./routes/cadastroRoutes')
@@ -24,6 +24,7 @@ const optCors = {
 };
 app.use(cors(optCors));
 // Configurar conexão com o banco de dados PostgreSQL
+//app.use('/videos',express.static(path.join(__dirname,'public/videos')))
 app.use('/thumbs', express.static(path.join(__dirname, 'public/thumbs')));
 app.use('/Users',express.static(path.join(__dirname, 'public/Users')))
 app.use(express.json());

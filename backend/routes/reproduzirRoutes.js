@@ -3,8 +3,9 @@ const pool = require('../db')
 const router = express.Router()
 const crypto = require('crypto');
 const { authenticateToken } = require('../controllers/auth');
-
+const fs = require('fs');
 router.get('/stream/:caminho', async (req, res) => {
+ 
   const { caminho } = req.params;
   const { token, expires } = req.query;
 
@@ -22,7 +23,7 @@ router.get('/stream/:caminho', async (req, res) => {
     return res.status(403).json({ error: 'Token inválido' });
   }
 
-  const videoPath = `public/${caminho}`;
+  const videoPath = `public/videos/${caminho}`;
   const stat = fs.statSync(videoPath);
   const fileSize = stat.size;
   const range = req.headers.range;
@@ -68,8 +69,9 @@ router.get('/:user/:tipo/:id',authenticateToken, async(req,res)=>{
       if(resTemp.rows.length == 0){
     return res.json({tempo_assist:0})
       }
-     
+     else{
       res.json(resTemp.rows[0])
+     }
   }
   catch (err) {
     console.error('Erro ao encontrar url', err);
@@ -83,7 +85,7 @@ router.get('/:user/:tipo/:id',authenticateToken, async(req,res)=>{
 // Gerar URL temporária baseada no caminho
 router.get('/get-video-url', authenticateToken, async (req, res) => {
   const { tipo, id } = req.query;
-
+  
   const table = tipo === 'filme' ? 'tb_filmes' : 'tb_episodios';
   const column = tipo === 'filme' ? 'id_filme' : 'id_ep';
   const url = tipo === 'filme' ? 'url_filme' : 'url_episodio'
@@ -117,7 +119,20 @@ router.get('/get-video-url', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Erro ao gerar URL temporária' });
   }
 });
-
+router.post('/saveTempo',authenticateToken,async(req,res)=>{
+  const {video_id,tempo_assist,id_user,tipo} = req.body
+  console.log(video_id,tempo_assist,id_user,tipo)
+  const tipo_video = tipo === "filme" ? 'id_filme': 'id_ep'
+   try{
+    await pool.query(`INSERT INTO tb_historico (id_user,${tipo_video},tempo_assist) VALUES($3,$2,$1) ON 
+      CONFLICT (id_user, ${tipo_video}) DO UPDATE SET tempo_assist = $1 WHERE tb_historico.id_user = $3 AND tb_historico.${tipo_video} = $2` ,[tempo_assist,video_id,id_user])
+    res.status(200)
+   }
+   catch(err){
+    console.log(err)
+    res.status(500)
+   }
+})
 
 
 module.exports = router

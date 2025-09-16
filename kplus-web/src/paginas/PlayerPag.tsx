@@ -11,7 +11,7 @@ const PlayerPag = () =>{
     const [isLoading,setLoading] = useState(true);
     const [isLoadingVideo,setLoadingVideo] = useState(true);
     const [videoUrl, setVideoUrl] = useState('');
-    useEffect(()=>{
+   useEffect(()=>{
         axiosInstance.get(`/reproduzir/${localStorage.getItem('user')}/${tipo}/${id}`,{
             headers:{
                 Authorization : `Bearer ${localStorage.getItem('token')}`
@@ -52,7 +52,7 @@ const PlayerPag = () =>{
 return(
     <div>
     {!isLoading && !isLoadingVideo &&
-    <Player src = {videoUrl} tempAssist={content?.tempo_assist}/>
+    <Player src = {videoUrl} tempAssist={content?.tempo_assist} id={id} tipo={tipo}/>
     }
     </div>
 )
