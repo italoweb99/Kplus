@@ -73,6 +73,18 @@ router.delete('/:user',authenticateToken,async(req,res)=>{
     res.status(500).json({error:'Erro ao deletar favorito',err});
   }
 })
+router.get('/:user/all',authenticateToken,async(req,res)=>{
+  const {user} = req.params
+  try{
+    const result = await pool.query('SELECT* FROM tb_favoritos WHERE id_user = $1',[user])
+
+    res.status(200).json(result.rows)
+  }
+  catch(err){
+    console.log(err)
+    res.status(500).json({message:"erro ao obter favoritos"})
+  }
+})
 
 
 module.exports = router

@@ -78,7 +78,9 @@ return(
                     <p>{ep.sinopse}</p>
                     <p>{`${toMins(ep.duracao)} mins`}</p>
                     {isLogedin ? (
+                        <Link to={`/reproducao/serie/${ep.id_ep}`}>
                    <ThumbFrame src={`http://localhost:5000${ep.thumb_url}`}  tempo_assist={ep.tempo_assist} duracao={ep.duracao}/>
+                   </Link>
                     ):(
                         <Link to = '/login'>
                              <ThumbFrame src={`http://localhost:5000${ep.thumb_url}`}  tempo_assist={ep.tempo_assist} duracao={ep.duracao}/>

@@ -145,7 +145,7 @@ const Carrossel2 = ({
                   <>
                     {contAssist ? (
                       <>
-                        <Link to="/filmes" key={`${item.tipo}-${item.id}`}>
+                        <Link to={`/reproducao/filme/${item.id}`} key={`${item.tipo}-${item.id}`}>
                           <ThumbFrame
                             src={`http://localhost:5000${item.thumb_url}`}
                             tempo_assist={item.tempo_assist}
@@ -186,7 +186,7 @@ const Carrossel2 = ({
                 ) : (
                   <>
                     {contAssist ? (
-                      <Link to="/series" key={`${item.tipo}-${item.id}`}>
+                      <Link to={`reproducao/serie/${item.id}`} key={`${item.tipo}-${item.id}`}>
                         <ThumbFrame
                           src={`http://localhost:5000${item.thumb_url}`}
                           tempo_assist={item.tempo_assist}

@@ -18,6 +18,7 @@ const SeriesPag = () =>{
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     const isLogedin = !!token && !!user;
+    const [isFavorito, setIsFavorito] = useState(false)
     useEffect(()=>{
      axiosInstance.get(`/series/${id}`)
      .then(response => {
@@ -31,7 +32,20 @@ const SeriesPag = () =>{
      })
     
     },[id])
-    
+    useEffect(() => {
+      if (token && user) {
+        axiosInstance.get(`/favoritos/${user}/all`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+          .then(res => {
+            const isFav = res.data.some((fav: any)=> String(fav.id_serie) === String(id))
+           setIsFavorito(isFav)
+          })
+          .catch(() => setIsFavorito(false));
+      }
+    }, [id, token, user]);
    const addFav = () =>{
     if(token){
        axiosInstance.post(`/favoritos/${user}/serie/${id}`,{},{
@@ -39,19 +53,39 @@ const SeriesPag = () =>{
             Authorization: `Bearer ${token}`
         }
        })
+       .then(()=>setIsFavorito(true))
        .catch(error => console.log(error.response.data.error))
     }
     else{
         nav('/login')
     }
    }
+   const removeFav = () => {
+   
+    if (token) {
+      axiosInstance.delete(`/favoritos/${user}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data:{
+            id: id,
+            tipo: 'Serie'
+        }
+      })
+      .then(() => setIsFavorito(false))
+      .catch(error => console.log(error.response.data.error));
+    }
+  };
     if(loading){
         <p>Carregando</p>
     }
     else{
     return(
         <div>
-        <button onClick = {()=>addFav()}className="bg-blue-500">adicionar aos favoritos</button>
+         <button
+  onClick={isFavorito ? removeFav : addFav}
+  className="bg-blue-500"
+>
+  {isFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+</button>
        <h1>{serie?.titulo}</h1> 
        <p>{`${serie?.totaltemp} ${serie?.totaltemp == 1 ? 'temporada': 'temporadas'}`}</p>
        <p>{serie?.genero.join(', ')}</p>

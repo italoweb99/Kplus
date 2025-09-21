@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import axiosInstance from "../axiosConfig";
 import { FaCompress, FaExpand, FaPause, FaPlay } from "react-icons/fa";
+import ExpandIcon from "./ExpandIcon";
+import ContractIcon from "./ContractIcon";
 
 interface PlayerProp{
   src: string;
@@ -20,12 +22,12 @@ const [isControlsVisible, setIsControlsVisible] = useState(false);
 const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     //const [isLoading,setLoading] = useState(true)
     //const lastSaveTime = useRef(0);
-    useEffect(()=>{
+   /* useEffect(()=>{
         if(tempAssist != null && videoRef.current != null){
             videoRef.current.currentTime = tempAssist;
-          
+         
         }
-    },[tempAssist]);
+    },[tempAssist]);*/
     
 useEffect(() => {
   const saveProgress = async () => {
@@ -65,9 +67,13 @@ useEffect(() => {
      setIsPlaying(!isPlaying);
     }
     const handleMetaData = () =>{
-      if(videoRef.current)
+      if(videoRef.current){
        setDuration(videoRef.current.duration);
+      if(tempAssist !=null){
+        videoRef.current.currentTime = tempAssist;
+      }
     }
+  }
     const handleTimeUpdate = () =>{
       if(videoRef.current)
         setCurrentTime(videoRef.current.currentTime);
@@ -126,15 +132,15 @@ return(
       >
         <div className="h-full flex justify-center items-center">
           <button className="text-white mt-2" onClick={handlePlay}>
-          {isPlaying ? <FaPlay size={40}/> : <FaPause size={40}/>}
+          {isPlaying ? <FaPause size={40}/>:<FaPlay size={40}/> }
         </button>
          </div>
         <div className="justify-between flex w-full">
         <p className="text-white">{`${currentTime.toFixed(2)} / ${duration.toFixed(2)}`}</p>
       { !isFullScreen? (
-        <FaExpand onClick={handleFullScreen} size={20} color="white"/>
+        <ExpandIcon onClick={handleFullScreen} size={25} color="white"/>
       ):(
-        <FaCompress onClick={handleFullScreen}size={20} color='white'/>
+        <ContractIcon onClick={handleFullScreen}size={25} color='white'/>
       )
          
       }
