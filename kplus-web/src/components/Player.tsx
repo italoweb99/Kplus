@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import axiosInstance from "../axiosConfig";
-import { FaCompress, FaExpand, FaPause, FaPlay } from "react-icons/fa";
+import { FaPause, FaPlay } from "react-icons/fa";
 import ExpandIcon from "./ExpandIcon";
 import ContractIcon from "./ContractIcon";
+import { useNavigate } from "react-router-dom";
+import { RiForward10Fill, RiReplay10Fill } from "react-icons/ri";
 
 interface PlayerProp{
   src: string;
@@ -16,10 +18,15 @@ const Player = ({src,tempAssist = null,id,tipo}:PlayerProp) =>{
     const [currentTime,setCurrentTime]=useState(0);
     const [isPlaying,setIsPlaying] = useState(false);
     const[isFullScreen,setIsFullScreen] = useState(false)
+    const[showNextEp,setShowNextEp] = useState(false)
     const playerRefConteiner = useRef<HTMLDivElement>(null);
-   // ... dentro do componente Player
+   const [isFinal10s, setIsFinal10s] = useState(false);
+   const[nextEp,setNextEp] = useState(null)
 const [isControlsVisible, setIsControlsVisible] = useState(false);
+const [autoNextCountdown, setAutoNextCountdown] = useState(5);
+const autoNextInterval = useRef<NodeJS.Timeout | null>(null);
 const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+const nav = useNavigate()
     //const [isLoading,setLoading] = useState(true)
     //const lastSaveTime = useRef(0);
    /* useEffect(()=>{
@@ -28,7 +35,47 @@ const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
          
         }
     },[tempAssist]);*/
-    
+   
+
+
+    // Contagem regressiva automática para o próximo episódio, pausando e retomando de onde parou
+    useEffect(() => {
+      let isMounted = true;
+      if (showNextEp && nextEp && !videoRef.current?.paused) {
+        if (!autoNextInterval.current) {
+          autoNextInterval.current = setInterval(() => {
+            setAutoNextCountdown((prev) => {
+              if (!isMounted) return prev;
+              if (prev <= 1) {
+                if (autoNextInterval.current) {
+                  clearInterval(autoNextInterval.current);
+                  autoNextInterval.current = null;
+                }
+                if (isMounted) {
+                  setShowNextEp(false);
+                  setIsFinal10s(false);
+                  nav(`/reproducao/serie/${nextEp}`);
+                }
+                return 5;
+              }
+              return prev - 1;
+            });
+          }, 1000);
+        }
+      } else {
+        if (autoNextInterval.current) {
+          clearInterval(autoNextInterval.current);
+          autoNextInterval.current = null;
+        }
+      }
+      return () => {
+        isMounted = false;
+        if (autoNextInterval.current) {
+          clearInterval(autoNextInterval.current);
+          autoNextInterval.current = null;
+        }
+      };
+    }, [showNextEp, nextEp, isPlaying, nav]);
 useEffect(() => {
   const saveProgress = async () => {
     try {
@@ -74,10 +121,6 @@ useEffect(() => {
       }
     }
   }
-    const handleTimeUpdate = () =>{
-      if(videoRef.current)
-        setCurrentTime(videoRef.current.currentTime);
-    }
     const handleSeek = (e: any) =>{
         const time = (e.target.value/100)* duration;
         if(videoRef.current)
@@ -95,6 +138,24 @@ useEffect(() => {
             setIsFullScreen(true)
           }
         }
+    }
+    const handleNextEp = async () =>{
+      try{
+        const result = await axiosInstance.get(`/series/proximoEp/${id}`,{
+          headers:{
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+      
+        if(result.data.proximo_episodio != null){
+         
+          setNextEp(result.data.proximo_episodio)
+          setShowNextEp(true)
+        }
+      }
+      catch(err){
+        console.log(err)
+      }
     }
     // ... dentro do componente Player
 const handleMouseMove = () => {
@@ -119,22 +180,68 @@ const handleMouseLeave = () => {
   }
   setIsControlsVisible(false);
 };
+
+const plusTenSeg=()=>{
+  if(videoRef.current){
+    videoRef.current.currentTime = videoRef.current.currentTime+1
+  }
+}
+const minusTenSeg=()=>{
+  if(videoRef.current){
+    videoRef.current.currentTime = videoRef.current.currentTime-1
+  }
+}
+
+
+const handleTimeUpdate = () => {
+  if (videoRef.current) {
+    setCurrentTime(videoRef.current.currentTime);
+
+    const remaining = videoRef.current.duration - videoRef.current.currentTime;
+    if (remaining <= 10 && !isFinal10s) {
+      setIsFinal10s(true);
+      if(tipo == 'serie'){
+     handleNextEp()
+      }
+    } else if (remaining > 10 && isFinal10s) {
+      setIsFinal10s(false);
+      setShowNextEp(false)
+    }
+  }
+};
+
+
+
+
+
+
+
+
 return(
     <div ref={playerRefConteiner} onMouseMove ={handleMouseMove} onMouseLeave={handleMouseLeave}className="h-screen">
       
     <video ref={videoRef} onTimeUpdate={handleTimeUpdate} className="bg-black h-screen w-screen"src={src} onLoadedMetadata={handleMetaData}>
-        </video>
+        </video >
+          { showNextEp &&
+          <div className="absolute bottom-30 right-10 z-10">
+         <button onClick={()=>{ setShowNextEp(false); setIsFinal10s(false); setAutoNextCountdown(5); nav(`/reproducao/serie/${nextEp}`)}}
+         className={`bg-white text-black p-2 rounded-md shadow-md`}>Próximo episódio em {autoNextCountdown}s...</button>
+         </div>
+          }
        <div
-        className={`absolute bg-black/60	 bottom-0 left-0 w-full h-full flex flex-col justify-end items-center p-4 transition-opacity duration-300 ${
+        className={`absolute bg-black/60	z-1 bottom-0 left-0 w-full h-full flex flex-col justify-end items-center p-4 transition-opacity duration-300 ${
           isControlsVisible ? ' opacity-100' : 'opacity-0'
         }`}
         style={{ pointerEvents: isControlsVisible ? 'auto' : 'none' }}
       >
-        <div className="h-full flex justify-center items-center">
-          <button className="text-white mt-2" onClick={handlePlay}>
+        <div className="h-full flex justify-center items-center space-x-20">
+          <RiReplay10Fill onClick={minusTenSeg} className="text-white hover:text-gray-300"  size={40}/>
+          <button className="text-white" onClick={handlePlay}>
           {isPlaying ? <FaPause size={40}/>:<FaPlay size={40}/> }
         </button>
+         <RiForward10Fill onClick={plusTenSeg} className="text-white hover:text-gray-300" size={40}/>
          </div>
+       
         <div className="justify-between flex w-full">
         <p className="text-white">{`${currentTime.toFixed(2)} / ${duration.toFixed(2)}`}</p>
       { !isFullScreen? (

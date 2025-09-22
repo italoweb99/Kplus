@@ -121,7 +121,7 @@ router.get('/get-video-url', authenticateToken, async (req, res) => {
 });
 router.post('/saveTempo',authenticateToken,async(req,res)=>{
   const {video_id,tempo_assist,id_user,tipo} = req.body
-  console.log(video_id,tempo_assist,id_user,tipo)
+  //console.log(video_id,tempo_assist,id_user,tipo)
   const tipo_video = tipo === "filme" ? 'id_filme': 'id_ep'
    try{
     await pool.query(`INSERT INTO tb_historico (id_user,${tipo_video},tempo_assist) VALUES($3,$2,$1) ON 

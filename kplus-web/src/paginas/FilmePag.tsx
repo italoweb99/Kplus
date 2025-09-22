@@ -89,7 +89,7 @@ return(
     <div className="h-screen">
     <img src={`http://localhost:5000${data?.thumb_url}`}/>
     <div className="flex justify-start items-center space-x-2">
-         <button onClick={()=>nav(`/reproducao/filme/${id}`) } className="bg-blue-500">Assistir</button>
+         <button onClick={()=>{token? nav(`/reproducao/filme/${id}`) : nav('/login') }} className="bg-blue-500">Assistir</button>
          <button
   onClick={isFavorito ? removeFav : addFav}
   className="bg-blue-500"

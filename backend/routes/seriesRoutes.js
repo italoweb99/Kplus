@@ -99,4 +99,51 @@ router.get('/temporadas/:temp', async(req,res)=>{
   res.status(500).json({error: 'Erro ao buscar serie'});
 }
 })
+router.get('/proximoEp/:id',authenticateToken,async(req,res)=>{
+  const {id} = req.params
+  try{
+  result = await pool.query(`SELECT
+  -- Tenta encontrar o próximo episódio na mesma temporada
+  CASE
+    WHEN (
+      SELECT
+        COUNT(*)
+      FROM tb_episodios AS E2
+      WHERE E2.id_temp = E1.id_temp AND E2.nm_ep > E1.nm_ep
+    ) > 0 THEN (
+      SELECT
+        E2.id_ep
+      FROM tb_episodios AS E2
+      WHERE E2.id_temp = E1.id_temp AND E2.nm_ep > E1.nm_ep
+      ORDER BY
+        E2.nm_ep
+      LIMIT 1
+    )
+    -- Se não houver, encontra o primeiro episódio da próxima temporada
+    ELSE (
+      SELECT
+        E3.id_ep
+      FROM tb_episodios AS E3
+      JOIN tb_temporadas AS T3
+        ON E3.id_temp = T3.id_temp
+      JOIN tb_temporadas AS T4
+        ON T3.id_serie = T4.id_serie
+      WHERE
+        T4.id_temp = E1.id_temp AND T3.nm_temp > T4.nm_temp
+      ORDER BY
+        T3.nm_temp,
+        E3.nm_ep
+      LIMIT 1
+    )
+  END AS proximo_episodio
+FROM tb_episodios AS E1
+WHERE
+  E1.id_ep = $1;`,[id])
+  res.status(200).json(result.rows[0])
+  }
+  catch(err){
+    console.log(err)
+    res.status(500).json({message: "erro ao obter proximo episodio"})
+  }
+})
 module.exports = router
