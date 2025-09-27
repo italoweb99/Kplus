@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Loader from "./Loader";
 import axiosInstance from "../axiosConfig";
 import { FaPause, FaPlay } from "react-icons/fa";
 import ExpandIcon from "./ExpandIcon";
@@ -13,6 +14,7 @@ interface PlayerProp{
   tipo: any;
 }
 const Player = ({src,tempAssist = null,id,tipo}:PlayerProp) =>{
+  const [isLoading, setIsLoading] = useState(true);
     const [duration,setDuration] = useState(0);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [currentTime,setCurrentTime]=useState(0);
@@ -220,8 +222,22 @@ const handleTimeUpdate = () => {
 return(
     <div ref={playerRefConteiner} onMouseMove ={handleMouseMove} onMouseLeave={handleMouseLeave}className="h-screen">
       
-    <video ref={videoRef} onTimeUpdate={handleTimeUpdate} className="bg-black h-screen w-screen"src={src} onLoadedMetadata={handleMetaData}>
-        </video >
+    {isLoading && (
+      <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-50">
+        <Loader size={100} color="white" />
+      </div>
+    )}
+    <video
+      ref={videoRef}
+      onTimeUpdate={handleTimeUpdate}
+      className="bg-black h-screen w-screen"
+      src={src}
+      onLoadedMetadata={handleMetaData}
+      onCanPlay={() => setIsLoading(false)}
+      onWaiting={() => setIsLoading(true)}
+      onLoadStart={() => setIsLoading(true)}
+    >
+    </video>
           { showNextEp &&
           <div className="absolute bottom-30 right-10 z-10">
          <button onClick={()=>{ setShowNextEp(false); setIsFinal10s(false); setAutoNextCountdown(5); nav(`/reproducao/serie/${nextEp}`)}}
