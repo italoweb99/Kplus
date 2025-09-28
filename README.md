@@ -43,6 +43,7 @@ O Kplus é uma plataforma de streaming de vídeos (filmes e séries) que oferece
 - **Controllers** para rotas e integração com o banco
 - **Public** para arquivos estáticos
 
+
 ---
 
 
