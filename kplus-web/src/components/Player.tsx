@@ -246,7 +246,7 @@ return(
           }
        <div
         className={`absolute bg-black/60	z-1 bottom-0 left-0 w-full h-full flex flex-col justify-end items-center p-4 transition-opacity duration-300 ${
-          isControlsVisible ? ' opacity-100' : 'opacity-0'
+          isControlsVisible && !isLoading ? ' opacity-100' : 'opacity-0'
         }`}
         style={{ pointerEvents: isControlsVisible ? 'auto' : 'none' }}
       >
