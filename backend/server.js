@@ -1,3 +1,4 @@
+
 const express = require('express');
 const pool = require('./db');
 const app = express();
@@ -87,3 +88,26 @@ app.get('/generos',async(req,res)=>{
     res.status(500).json({message: 'Erro ao obter generos'})
   }
 })
+// Rota de busca por filmes ou séries
+app.get('/search', async (req, res) => {
+  const { query } = req.query;
+  if (!query || typeof query !== 'string') {
+    return res.status(400).json({ error: 'Parâmetro query é obrigatório.' });
+  }
+  try {
+    // Busca filmes
+    const filmes = await pool.query(
+      `SELECT 'filme' as tipo, id_filme as id, titulo, sinopse, thumb_url FROM tb_filmes WHERE LOWER(titulo) LIKE LOWER($1)`,
+      [`%${query}%`]
+    );
+    // Busca séries
+    const series = await pool.query(
+      `SELECT 'serie' as tipo, id_serie as id, titulo, sinopse, thumb_url FROM tb_series WHERE LOWER(titulo) LIKE LOWER($1)`,
+      [`%${query}%`]
+    );
+    res.json({ filmes: filmes.rows, series: series.rows });
+  } catch (err) {
+    console.error('Erro ao buscar filmes/séries', err);
+    res.status(500).json({ error: 'Erro ao buscar filmes/séries' });
+  }
+});

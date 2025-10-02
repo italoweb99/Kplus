@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom"
-import Carosel from "../components/Carosel";
-import CaroselExtended from "../components/CaroselExtended";
+//import { Link } from "react-router-dom"
+//import Carosel from "../components/Carosel";
+//import CaroselExtended from "../components/CaroselExtended";
 import { useEffect, useState } from "react";
 import HistoricoCar from "../components/HistoricoCar";
 import FavCar from "../components/FavCar";
 import axiosInstance from "../axiosConfig";
 import Carrossel2 from "../components/Carossel2";
-
+import Carrossel from "../components/Carrossel";
 const HomePag = () => {
-    const btnStyle = "bg-blue-300 p-2 m-2 text-white text-md rounded-md";
+   // const btnStyle = "bg-blue-300 p-2 m-2 text-white text-md rounded-md";
     
     const [loadingD,setLoadingD] = useState(true);
    
@@ -35,17 +35,9 @@ const HomePag = () => {
 return(
     <div>
         
-        <div>
-    <Link to ={'/filmes'}>
-        <button className={btnStyle}>filmes</button>
-    </Link>
-    
-    <Link to ={'/series'}>
-        <button className={btnStyle}>series</button>
-    </Link>
-    </div>
+       
     <div className="my-4">
-    <Carosel/>
+    <Carrossel/>
     </div>
     <div>
        
