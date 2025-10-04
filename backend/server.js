@@ -1,4 +1,3 @@
-
 const express = require('express');
 const pool = require('./db');
 const app = express();
@@ -90,20 +89,31 @@ app.get('/generos',async(req,res)=>{
 })
 // Rota de busca por filmes ou séries
 app.get('/search', async (req, res) => {
-  const { query } = req.query;
+  const { query, page } = req.query;
   if (!query || typeof query !== 'string') {
     return res.status(400).json({ error: 'Parâmetro query é obrigatório.' });
   }
+  // Paginação segura
+  const pageNum = parseInt(page) || 1;
+  const limit = 20;
+  const offset = (pageNum - 1) * limit;
+
   try {
     // Busca filmes
     const filmes = await pool.query(
-      `SELECT 'filme' as tipo, id_filme as id, titulo, sinopse, thumb_url FROM tb_filmes WHERE LOWER(titulo) LIKE LOWER($1)`,
-      [`%${query}%`]
+      `SELECT 'filme' as tipo, id_filme as id, titulo, sinopse, thumb_url 
+       FROM tb_filmes 
+       WHERE LOWER(titulo) LIKE LOWER($1)
+       LIMIT $2 OFFSET $3`,
+      [`%${query}%`, limit, offset]
     );
     // Busca séries
     const series = await pool.query(
-      `SELECT 'serie' as tipo, id_serie as id, titulo, sinopse, thumb_url FROM tb_series WHERE LOWER(titulo) LIKE LOWER($1)`,
-      [`%${query}%`]
+      `SELECT 'serie' as tipo, id_serie as id, titulo, sinopse, thumb_url 
+       FROM tb_series 
+       WHERE LOWER(titulo) LIKE LOWER($1)
+       LIMIT $2 OFFSET $3`,
+      [`%${query}%`, limit, offset]
     );
     res.json({ filmes: filmes.rows, series: series.rows });
   } catch (err) {

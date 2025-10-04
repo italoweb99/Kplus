@@ -24,6 +24,8 @@ router.get('/temporadas/:temp/:user',authenticateToken,async(req,res)=>{
 })
 router.get('/categoria/:categoria',async(req,res)=>{
   const categoria = req.params.categoria;
+  const {page} = req.query
+  const offset = (page-1)*20
   try{
     let result;
    if (categoria == "Todos"){
@@ -36,7 +38,9 @@ router.get('/categoria/:categoria',async(req,res)=>{
         FROM tb_series s 
         JOIN tb_serie_genero sg ON s.id_serie= sg.id_serie 
         JOIN tb_genero g ON sg.id_genero = g.id_genero 
-        WHERE g.nm_genero = $1`,[categoria])
+        WHERE g.nm_genero = $1
+        LIMIT 20
+        OFFSET $2`,[categoria,offset])
     }
     res.json(result.rows);
   }

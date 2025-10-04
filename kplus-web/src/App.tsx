@@ -12,6 +12,7 @@ import Login from './paginas/Login';
 import Usuarios from './paginas/Usuarios';
 import PlayerPag from './paginas/PlayerPag';
 import TesteIa from "./paginas/TesteIa";
+import SearchPage from "./paginas/SearchPage";
 
 function AppRoutes() {
   const location = useLocation();
@@ -32,6 +33,7 @@ function AppRoutes() {
           <Route path='/usuarios' element={<Usuarios/>}/>
           <Route path='/reproducao/:tipo/:id' element={<PlayerPag/>}/>
           <Route path="/testeia" element={<TesteIa/>}/>
+          <Route path = "/search/:query" element = {<SearchPage/>}/>
         </Routes>
       </div>
       </main>
