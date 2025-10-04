@@ -17,14 +17,17 @@ router.get('/',async(req,res)=>{
 
 router.get('/categoria/:categoria',async(req,res)=>{
   const categoria = req.params.categoria;
+  const {page} = req.query
+  const offset = (page-1)*20
   try{
     let result;
+
    if (categoria == "Todos"){
-      result = await pool.query('SELECT * FROM tb_filmes');
+      result = await pool.query('SELECT * FROM tb_filmes ORDER BY id_filme asc LIMIT 20 OFFSET $1',[offset]);
       //console.log("todos");
     }
     else{
-      result = await pool.query('SELECT f.id_filme, f.titulo, f.ano_lancamento, f.sinopse, f.url_filme, f.thumb_url FROM tb_filmes f JOIN tb_filme_genero fg ON f.id_filme = fg.id_filme JOIN tb_genero g ON fg.id_genero = g.id_genero WHERE g.nm_genero = $1',[categoria])
+      result = await pool.query('SELECT f.id_filme, f.titulo, f.ano_lancamento, f.sinopse, f.url_filme, f.thumb_url FROM tb_filmes f JOIN tb_filme_genero fg ON f.id_filme = fg.id_filme JOIN tb_genero g ON fg.id_genero = g.id_genero WHERE g.nm_genero = $1 LIMIT 20 OFFSET $2',[categoria,offset])
     }
     res.json(result.rows);
   }

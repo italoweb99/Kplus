@@ -36,7 +36,7 @@ return(
     <div>
         
        
-    <div className="my-4">
+    <div className="mb-4">
     <Carrossel/>
     </div>
     <div>

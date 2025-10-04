@@ -22,7 +22,7 @@ const ToCap=(e:String)=>{
    return e.charAt(0).toUpperCase() + e.slice(1)
 }
 return(
-    <>
+    <div>
     <button key={'Todos'} onClick={()=>{Out('Todos')}} className="bg-blue-300 p-2 m-2 text-white text-md rounded-md">Todos</button>
     {
         generos?.map((genero)=>(
@@ -30,7 +30,7 @@ return(
         ))
     }
     
-</>
+</div>
 )
 }
 export default GenSelecter

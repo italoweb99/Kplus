@@ -56,7 +56,9 @@ const SearchBar = ({isScroll=false,sboxState,onFocus,boxHandler,getFilmes,search
         }
     },[sbarState,sboxState])
     useEffect(()=>{
+        if(query && query.trim() !==""){
       getMovies()
+        }
     },[query])
     return(
         <div className="flex justify-end text-gray-500 items-center mx-4 h-full flex-grow transition-all duration-300 ">

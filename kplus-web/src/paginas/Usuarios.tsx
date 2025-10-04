@@ -73,7 +73,7 @@ const Usuario = () => {
         {isAddOpen && (
           <AddUser onClose={handleClose} />
         )}
-        <div className="flex space-x-6 justify-center itens-center">
+        <div className="flex space-x-6 justify-center items-center">
         {
           users.map((user, index) => (
             <div className=" group relative flex flex-col h-full w-full justify-center items-center"key={index} onClick={() => handleClick(user)}>

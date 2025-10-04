@@ -4,6 +4,7 @@ import GenSelecter from "../components/GenSelecter"
 import ContractIcon from "../components/ContractIcon"
 import ExpandIcon from "../components/ExpandIcon"
 import Loader from "../components/Loader"
+import UserIcon from "../components/UserIcon"
 const TesteIa = () =>{
 const [genero,setGenero] = useState()
 const handleClick =(e:any) =>{
@@ -19,6 +20,7 @@ return(
         </div>
         <ExpandIcon size={50}/>
         <Loader color="purple" size={300}/>
+        <UserIcon/>
     </>
 )
 }

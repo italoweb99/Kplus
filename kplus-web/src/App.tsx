@@ -19,6 +19,7 @@ function AppRoutes() {
   return (
     <>
       {!hideHeader && <Header />}
+      <main className="bg-bgpurple">
       <div className={!hideHeader ? 'pt-24' : ''}>
         <Routes>
           <Route path="/" element={<HomePag/>}/>
@@ -33,6 +34,7 @@ function AppRoutes() {
           <Route path="/testeia" element={<TesteIa/>}/>
         </Routes>
       </div>
+      </main>
     </>
   );
 }

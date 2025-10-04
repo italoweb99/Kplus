@@ -10,7 +10,7 @@ function Header() {
   const [sbarFocus,setSBarFocus] = useState(false);
   const [filmes, setFilmes] = useState<{ filmes: any[]; series: any[] }>({ filmes: [], series: [] })
   const box: any = useRef(null);
-  const btnStyle = "bg-blue-300 p-2 m-2 text-white text-md rounded-md";
+  const btnStyle = `p-2 m-2 text-white text-lg rounded-md ${scrolling? ' hover:bg-bgpurplehover/80 ': 'hover:bg-bgpurplehover'}`;
   const handleFilmes = (e: any) =>{
     setFilmes(e)
   }
@@ -68,11 +68,11 @@ function Header() {
         </Link>
         <div className="ml-10">
           <Link to ={'/filmes'}>
-        <button className={btnStyle}>filmes</button>
+        <button className={btnStyle}>Filmes</button>
     </Link>
     
     <Link to ={'/series'}>
-        <button className={btnStyle}>series</button>
+        <button className={btnStyle}>Séries</button>
     </Link>
     </div>
         <SearchBar isScroll={scrolling} onFocus = {handleSbarFocus} sboxState = {sboxFocus} boxHandler={handleBox} getFilmes={handleFilmes} searchClick = {handleSearchclick}/>
