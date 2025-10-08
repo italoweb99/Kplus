@@ -16,11 +16,12 @@ return(
     <GenSelecter Out={handleClick}/>
     <AiFilmeBar/>
     <div>
+     <UserIcon/>
     <ContractIcon size={50} color='#8A00C4' onClick={()=>{console.log('click')}}/>
         </div>
         <ExpandIcon size={50}/>
         <Loader color="purple" size={300}/>
-        <UserIcon/>
+       
     </>
 )
 }

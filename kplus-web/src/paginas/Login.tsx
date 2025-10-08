@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosConfig";
 
 const Login = () =>{
+    //TODO: Mostra/Esconder senha
     const [formData,setFormData] = useState({email:'',senha:''});
 
     const nav = useNavigate();
@@ -31,7 +32,7 @@ const Login = () =>{
     return(
         <div className="flex flex-col">
             <input type="email" name = "email" placeholder="Email" onChange={handleChange} required/>
-            <input type="senha" name = "senha" placeholder="senha" onChange={handleChange} required />
+            <input type="password" name = "senha" placeholder="senha" onChange={handleChange} required />
             <button onClick={enviar}>enviar</button>
         </div>
     )
