@@ -10,6 +10,7 @@ interface Series{
     sinopse: string;
     temps: number[];
 }
+//TODO: estilizar pagina
 const SeriesPag = () =>{
     const [serie,setSerie] = useState<Series>();
     const [loading,setLoading] = useState(true);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams,useNavigate } from "react-router-dom"
 import axiosInstance from "../axiosConfig";
+//TODO: estilizar pagina
 interface Data{
     titulo: string;
     thumb_url: string;

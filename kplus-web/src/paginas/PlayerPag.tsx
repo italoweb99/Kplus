@@ -5,6 +5,7 @@ import axiosInstance from "../axiosConfig";
 interface Content{
   tempo_assist: number;
 }
+//TODO: estilizar pagina
 const PlayerPag = () =>{
     const {id,tipo} = useParams();
     const [content,setContent] = useState<Content>();

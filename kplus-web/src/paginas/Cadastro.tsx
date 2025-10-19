@@ -1,7 +1,7 @@
 
 import { useState } from "react"
 import axiosInstance from "../axiosConfig";
-
+//TODO: estilizar pagina
 const Cadastro = () =>{
     const [formData,setFormData] = useState([{nome:'',email:'',senha:''}]);
     const[message,setMessage] = useState ('');

@@ -9,7 +9,7 @@ interface Filme {
   titulo: string;
   thumb_url: string;
 }
-
+//TODO: estilizar pagina
 const Filmes = () => {
   const [categoria, setCategoria] = useState('Todos');
   const [hasMore, setHasMore] = useState(true);

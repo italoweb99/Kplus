@@ -7,6 +7,7 @@ import FavCar from "../components/FavCar";
 import axiosInstance from "../axiosConfig";
 import Carrossel2 from "../components/Carossel2";
 import Carrossel from "../components/Carrossel";
+//TODO: estilizar pagina
 const HomePag = () => {
    // const btnStyle = "bg-blue-300 p-2 m-2 text-white text-md rounded-md";
     

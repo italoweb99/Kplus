@@ -11,6 +11,7 @@ interface Item{
     thumb_url: String;
 
 }
+//TODO: estilizar pagina
 const SearchPage = () =>{
 const {query} = useParams()
 const [hasMore,setHasMore] = useState(true)

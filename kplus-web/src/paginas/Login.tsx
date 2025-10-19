@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosConfig";
 
 const Login = () =>{
+    //TODO: estilizar pagina
     //TODO: Mostra/Esconder senha
+    //TODO: Criar botão criar conta
     const [formData,setFormData] = useState({email:'',senha:''});
 
     const nav = useNavigate();

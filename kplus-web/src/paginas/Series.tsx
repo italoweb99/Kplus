@@ -8,6 +8,7 @@ interface Serie{
   titulo: string;
   thumb_url: string;
 }
+//TODO: estilizar pagina
 const Series = () => {
  const [categoria, setCategoria] = useState('Todos');
   const [hasMore, setHasMore] = useState(true);

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import SearchBox from "./SearchBox";
-
+//TODO: Colocar o icone de usuario
 function Header() {
   const [scrolling, setScrolling] = useState(false);
   const[isSerchBoxOpen, setSearchBoxOpen] = useState(false)

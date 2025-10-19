@@ -47,7 +47,7 @@ const AddUser = ({isEdit=false,onClose,perfil=null}: AddUserProps) =>{
     setOpenThumbs(false);
     }
     const handleSubmit = () =>{
-        //TODO: implementar edit server
+        
         const idConta = localStorage.getItem('idConta');
         const url = isEdit ? `usuarios/${idConta}/${perfil}` : `/usuarios/${idConta}`
         const metodo = isEdit ? 'put' : 'post'

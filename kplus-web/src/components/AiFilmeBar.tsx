@@ -3,7 +3,7 @@ import axiosInstance from "../axiosConfig";
 import Carrossel2 from "./Carossel2";
 import { MdSend } from "react-icons/md"; // Importando o ícone de enviar
 import { FaTimes } from "react-icons/fa";
-
+//TODO: estilizar a tela
 interface filmeData {
   id: Number;
   titulo: String;
