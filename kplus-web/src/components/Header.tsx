@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import SearchBox from "./SearchBox";
+import UserIcon from "./UserIcon";
 //TODO: Colocar o icone de usuario
 function Header() {
   const [scrolling, setScrolling] = useState(false);
@@ -76,6 +77,7 @@ function Header() {
     </Link>
     </div>
         <SearchBar isScroll={scrolling} onFocus = {handleSbarFocus} sboxState = {sboxFocus} boxHandler={handleBox} getFilmes={handleFilmes} searchClick = {handleSearchclick}/>
+         <UserIcon/>
       </div>
     </header>
     {
