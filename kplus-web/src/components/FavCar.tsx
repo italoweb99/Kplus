@@ -55,7 +55,7 @@ return(
     { 
     !loadingF && user && (
 <>
-    <p>Favoritos</p>
+    <p className="text-gray-200 font-semibold">Favoritos</p>
 
 <Carrossel2  obj = {fav} isFav={true} onDelete={handleDelete}/>
 </>  

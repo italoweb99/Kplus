@@ -21,7 +21,7 @@ function AppRoutes() {
     <>
       {!hideHeader && <Header />}
       <main className="bg-bgpurple">
-      <div className={!hideHeader ? 'pt-24' : ''}>
+      <div className={!hideHeader ? 'pt-21' : ''}>
         <Routes>
           <Route path="/" element={<HomePag/>}/>
           <Route path='/filmes' element={<Filmes/>}/>

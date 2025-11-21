@@ -102,14 +102,33 @@ return(
         <div onMouseEnter={()=>setBoxVisibility(true)} onMouseLeave={()=>setBoxVisibility(false)}className="rounded-full overflow-hidden h-10 w-10 flex justify-center items-center">
         <img src={`http://localhost:5000${userData.thumb_url}`} className="h-full object-cover flex justify-center items-center"/>
       </div>
-      {
-      (showBox)&&(
-      <div onMouseEnter={()=>setIsOverBox(true)} onMouseLeave={()=>setIsOverBox(false)} className="h-full w-64 bg-red-500 absolute top-12 mt-2 rounded-sm right-0 items-center justify-center flex flex-col">
-        <button onClick={()=>nav('/usuarios')} className="bg-red-600 w-64 hover:bg-red-700">Configurações de usuarios</button>
-         <button onClick={()=>{handleClick()}} className="bg-red-600 w-64 hover:bg-red-700">Sair</button>
-      </div>
-      )
-      }
+     {
+  (showBox) && (
+    <div
+      onMouseEnter={() => setIsOverBox(true)}
+      onMouseLeave={() => setIsOverBox(false)}
+      className="absolute right-0 mt-2 w-64 z-50 rounded-lg shadow-lg bg-bgpurple/80
+                 flex flex-col overflow-hidden transition-opacity duration-200  backdrop-blur-sm"
+      role="dialog"
+      aria-label="Menu do usuário"
+    >
+      <button
+        onClick={() => nav('/usuarios')}
+        className="w-full  px-4 py-3   transition-colors hover:bg-bgpurplehover/80 text-gray-200 hover:text-gray-300"
+      >
+        Configurações de usuário
+      </button>
+
+
+      <button
+        onClick={() => { handleClick(); }}
+        className="w-full px-4 py-3   hover:bg-bgpurplehover/80 transition-colors text-gray-200 hover:text-gray-300"
+      >
+        Sair
+      </button>
+    </div>
+  )
+}
       </div>
     ):(
       <div onClick={()=>nav('/login')} className="rounded-full overflow-hidden h-10 w-10 flex justify-center items-center">

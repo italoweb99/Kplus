@@ -40,14 +40,14 @@ return(
     <div className="mb-4">
     <Carrossel/>
     </div>
-    <div>
-       
+    <div className="px-10">
+ <div>   
     {isLogedin &&
      <HistoricoCar user = {user}/>
 }
 </div>
 <div>
-        <p>Destaques</p>
+        <p className="text-gray-200 font-semibold">Destaques</p>
     {!loadingD &&
     <Carrossel2  obj = {destaques} />   
 }
@@ -59,6 +59,7 @@ return(
      )
 }
 </div>
+</div>   
     </div>
 );
 }

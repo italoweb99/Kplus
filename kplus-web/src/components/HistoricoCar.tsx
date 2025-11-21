@@ -28,7 +28,7 @@ const HistoricoCar =({user}:{user: string})=>{
         { 
             !loading && user && hist && hist.length > 0 && (
                 <>
-        <p>Continuar assistindo</p>
+        <p className="text-gray-200 font-semibold">Continuar assistindo</p>
         <Carrossel2  obj = {hist} titulos = {true} contAssist = {true}/>   
         </>
             )
