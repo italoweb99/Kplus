@@ -9,7 +9,7 @@ interface Filme {
   titulo: string;
   thumb_url: string;
 }
-//TODO: estilizar pagina
+
 const Filmes = () => {
   const [categoria, setCategoria] = useState('Todos');
   const [hasMore, setHasMore] = useState(true);
@@ -18,7 +18,6 @@ const Filmes = () => {
   const fetchFilmes = async (page: number): Promise<Filme[]> => {
     const res = await axiosInstance.get(`/filmes/categoria/${categoria}?page=${page}`);
     // Se vier menos do que o esperado, acabou a lista
-    console.log(res.data)
     if (res.data.length < 20) setHasMore(false);
     else setHasMore(true);
     return res.data;
@@ -30,22 +29,46 @@ const Filmes = () => {
   };
 
   return (
-    <div>
-      <GenSelecter Out={handleCat} />
-      <InfiniteScroll
-      key={categoria}
-        fetchData={fetchFilmes}
-        hasMore={hasMore}
-        renderItem={(filme: Filme, idx: number) => (
-          <div className="flex flex-col items-center justify-center" key={`filme-${filme.id_filme}-${idx}`}>
-            <Link to={`/filmes/${filme.id_filme}`}>
-              <img src={`http://localhost:5000${filme.thumb_url}`} className="h-56 rounded-lg" />
-            </Link>
-            <h1 className='m-2 line-clamp-1'>{filme.titulo}</h1>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-700 text-white py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-2xl lg:text-3xl font-bold">Filmes</h1>
+            <p className="text-sm text-slate-300 mt-1">Explore por categoria</p>
           </div>
-        )}
-        className="grid grid-cols-6 gap-4 m-2"
-      />
+
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <GenSelecter Out={handleCat} />
+          </div>
+        </header>
+
+        <main>
+          <div className="bg-white/3 p-4 rounded-lg border border-white/6 shadow-sm">
+            <InfiniteScroll
+              key={categoria}
+              fetchData={fetchFilmes}
+              hasMore={hasMore}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"
+              renderItem={(filme: Filme, idx: number) => (
+                <div
+                  className="flex flex-col items-center transform hover:scale-105 transition"
+                  key={`filme-${filme.id_filme}-${idx}`}
+                >
+                  <Link to={`/filmes/${filme.id_filme}`} className="w-full block rounded-lg overflow-hidden shadow-md">
+                    <img
+                      src={`http://localhost:5000${filme.thumb_url}`}
+                      alt={filme.titulo}
+                      className="w-full h-44 object-cover"
+                      loading="lazy"
+                    />
+                  </Link>
+                  <h2 className="mt-2 text-center text-sm text-white/90 line-clamp-1 w-full">{filme.titulo}</h2>
+                </div>
+              )}
+            />
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

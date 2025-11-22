@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaPen, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import ThumbFrame from "./ThumbFrame";
 
@@ -39,43 +39,31 @@ const Carrossel2 = ({
 
   // 3. Usa useEffect e ResizeObserver para monitorar o tamanho do contêiner
   useEffect(() => {
-    // Acessa o elemento DOM através da referência
     const containerElement = containerRef.current;
     if (!containerElement) return;
-
-    // Define a largura inicial do contêiner
     setContainerWidth(containerElement.offsetWidth);
-
-    // Cria uma nova instância de ResizeObserver
     const observer = new ResizeObserver((entries) => {
-      // Quando o tamanho do contêiner muda, atualiza o estado
       if (entries[0]) {
         setContainerWidth(entries[0].contentRect.width);
       }
     });
-
-    // Começa a observar o contêiner
     observer.observe(containerElement);
-
-    // Função de limpeza para parar a observação quando o componente for desmontado
     return () => {
       observer.disconnect();
     };
-  }, []); // O array de dependências vazio garante que o observer seja criado apenas uma vez
+  }, []);
 
   // 4. Recalcula a visibilidade dos controles com base na largura do contêiner
   useEffect(() => {
     const contentWidth = wdToPixel * obj.length + wdToPixel * marginStart;
     setShowControls(contentWidth > containerWidth);
-    
-    // Reseta a posição se o contêiner for redimensionado e os controles sumirem
-    if (contentWidth <= containerWidth) {
-        setCurrent(0);
-        setShowRControl(true);
-    }
 
+    if (contentWidth <= containerWidth) {
+      setCurrent(0);
+      setShowRControl(true);
+    }
   }, [containerWidth, obj, wdToPixel, marginStart]);
-  
+
   const next = () => {
     if (wdToPixel * (obj.length - current - 1) + wdToPixel * marginStart <= containerWidth) {
       setCurrent(current + 1);
@@ -84,7 +72,7 @@ const Carrossel2 = ({
       setCurrent(current + 1);
     }
   };
-  
+
   const prev = () => {
     current === 0 ? setCurrent(0) : setCurrent(current - 1);
     if (!showRControl) {
@@ -96,15 +84,23 @@ const Carrossel2 = ({
     // 5. Atribui a referência (ref) ao contêiner principal
     <div className="w-full" ref={containerRef}>
       <div className="relative overflow-hidden">
+        {/* botão de editar posicionado ao final (canto direito) da área visível */}
         {isFav && (
-          <button
-            onClick={() => setEdit(!isEdit)}
-            style={{ marginLeft: wdToPixel * marginStart }}
-            className="text-white"
-          >
-            Editar
-          </button>
+          <div className="absolute right-4 top--10 z-40">
+            <button
+              onClick={() => setEdit(!isEdit)}
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition ${
+                isEdit ? "bg-amber-500 text-white hover:bg-amber-600" : "bg-white/6 text-slate-200 hover:bg-white/10"
+              }`}
+              aria-pressed={isEdit}
+              title={isEdit ? "Finalizar edição" : "Editar favoritos"}
+            >
+              <FaPen />
+              <span className="sr-only">Editar</span>
+            </button>
+          </div>
         )}
+
         {isloading && (
           <div
             className="flex space-x-3"
@@ -137,9 +133,7 @@ const Carrossel2 = ({
             obj.map((item: any) => (
               <div
                 key={item.id}
-                className={`text-gray-200 relative w-full ${
-                  !isEdit ? "hover:scale-110" : ""
-                } transition-all duration-300`}
+                className={`text-gray-200 relative w-full ${!isEdit ? "hover:scale-110" : ""} transition-all duration-300`}
               >
                 {item.tipo == "Filme" ? (
                   <>
