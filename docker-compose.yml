@@ -5,7 +5,7 @@ services:
     container_name: kplus-postgres
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: RThFsRCXjQuJ
       POSTGRES_DB: kplus
     volumes:
       - pgdata:/var/lib/postgresql/data
