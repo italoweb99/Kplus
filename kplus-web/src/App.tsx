@@ -1,5 +1,3 @@
-
-
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Header from './components/Header';
 import Filmes from './paginas/Filmes';
@@ -13,6 +11,7 @@ import Usuarios from './paginas/Usuarios';
 import PlayerPag from './paginas/PlayerPag';
 import TesteIa from "./paginas/TesteIa";
 import SearchPage from "./paginas/SearchPage";
+import AiFilmeBar from "./components/AiFilmeBar";
 
 function AppRoutes() {
   const location = useLocation();
@@ -44,6 +43,7 @@ function AppRoutes() {
 const App = () => (
   <Router>
     <AppRoutes />
+    <AiFilmeBar /> {/* ficará sobre todas as rotas exceto player/reproducao */}
   </Router>
 );
 

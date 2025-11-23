@@ -1,148 +1,140 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import axiosInstance from "../axiosConfig";
 import Carrossel2 from "./Carossel2";
-import { MdSend } from "react-icons/md"; // Importando o ícone de enviar
+import { MdSend } from "react-icons/md";
 import { FaTimes } from "react-icons/fa";
-//TODO: estilizar a tela
-interface filmeData {
-  id: Number;
-  titulo: String;
+
+interface FilmeData {
+  id: number;
+  titulo: string;
+  thumb_url?: string;
 }
 
 const AiFilmeBar = () => {
-  const [filmes, setFilmes] = useState<filmeData[]>([]);
+  const location = useLocation();
+  // Não renderiza sobre páginas de player/reproducao
+  if (location.pathname.startsWith("/reproducao") || location.pathname.startsWith("/player")) return null;
+
+  const [filmes, setFilmes] = useState<FilmeData[]>([]);
   const [descricao, setDescricao] = useState("");
-  const [isOpen, setIsOpen] = useState(false); // Estado para controlar a abertura da barra de pesquisa
-  const [isLoading, setIsLoading] = useState(false); // Estado para o indicador de carregamento
-  const [showResults, setShowResults] = useState(false); // Estado para mostrar a caixa de resultados
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const handleSubmit = async () => {
-    if (descricao) {
-      setIsLoading(true); // Inicia o carregamento
-      setShowResults(false); // Esconde resultados anteriores
-      try {
-        const response = await axiosInstance.post("/gia", {
-          descricao: descricao,
-        });
-        setFilmes(response.data);
-        setShowResults(true);
-         // Exibe a caixa de resultados
-      } catch (err) {
-        console.error("Erro ao buscar filmes:", err);
-        // Opcional: mostrar uma mensagem de erro para o usuário
-      } finally {
-        setIsLoading(false); // Finaliza o carregamento
-      }
+    if (!descricao.trim()) return;
+    setIsLoading(true);
+    setShowResults(false);
+    try {
+      const response = await axiosInstance.post("/gia", { descricao: descricao.trim() });
+      const data = (response.data || []).map((f: any) => ({
+        id: f.id ?? f._id ?? 0,
+        titulo: f.titulo ?? f.name ?? "",
+        thumb_url: f.thumb_url ?? f.url ?? f.thumb ?? "/Users/iconeDefault_user.svg",
+      }));
+      setFilmes(data);
+      setShowResults(true);
+    } catch (err) {
+      console.error("Erro ao buscar filmes:", err);
+      setFilmes([]);
+      setShowResults(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="fixed bottom-8 right-8 z-50">
-      {/* Botão Flutuante Redondo */}
+    <div>
+      {/* Floating button - visual alinhado ao tema */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out"
+        onClick={() => setIsOpen((s) => !s)}
+        aria-label="Abrir busca AI"
+        title="Buscar filmes com AI"
+        className="fixed right-4 bottom-4 md:right-8 md:bottom-8 z-[60] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-2xl border border-white/10 hover:scale-105 transform transition focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-          />
+        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
         </svg>
       </button>
 
-      {/* Barra de Pesquisa e Resultados */}
+      {/* Modal overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
-          <div className=" fixed bottom-16 w-4/6  flex flex-col justify-end items-center transform transition-all duration-300 ease-in-out scale-100">
-            {/* Cabeçalho da barra de pesquisa com botão de fechar */}
-           <div className=" p-4 border max-w-4xl  min-w-2xl border-gray-200 rounded-lg bg-gray-50 max-h-5xl overflow-y-auto">
-             {showResults && filmes.length > 0 && (
-             
-                <div className="p-4 max-w-4xl ">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">
-                  Esses são os filmes mais próximos à sua descrição:
-                </h3>
-                <Carrossel2
-                  obj={filmes}
-                  width={50}
-                  height={70}
-                  titulos={true}
-                />
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
+            aria-hidden
+          />
+
+          <div className="relative w-full max-w-4xl mx-4 md:mx-0 mb-6 md:mb-0">
+            <div className="rounded-xl overflow-hidden bg-slate-900/95 border border-white/6 shadow-xl">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-white/6">
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Buscar com AI</h3>
+                  <p className="text-sm text-slate-400">Descreva o tipo de filme e eu trago sugestões</p>
                 </div>
-            )}
-
-            {showResults && filmes.length === 0 && (
-              <div className="mt-6 p-4 text-center text-gray-600">
-                Nenhum filme encontrado para a sua descrição.
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-slate-300 hover:text-white p-2 rounded-md"
+                  aria-label="Fechar"
+                >
+                  <FaTimes />
+                </button>
               </div>
-            )}
 
-            {isLoading && (
-              <div className="mt-6 text-center text-blue-600">
-                Buscando filmes...
-              </div>
-            )}
-              
-            
-            </div>
-            {/* Barra de Pesquisa */}
-            <div className="flex w-full bg-white p-1 rounded-full items-center space-x-1 mt-4">
-            <FaTimes className="mx-2"onClick={()=>{setIsOpen(false)}}/>
-              <input
-                type="text"
-                placeholder="Descreva o tipo de filme que você procura..."
-                className="flex-auto p-3 bg-white border border-none rounded-full focus:outline-none focus:ring-none focus:ring-blue-500"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-                onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                        handleSubmit();
-                    }
-                }}
-              />
-              <button
-                onClick={handleSubmit}
-                disabled={isLoading} // Desabilita o botão enquanto carrega
-                className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? (
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                ) : (
-                  <MdSend className="h-5 w-5" />
+              <div className="px-5 py-4 max-h-[60vh] overflow-y-auto">
+                {isLoading && (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="text-blue-400">Buscando filmes...</div>
+                  </div>
                 )}
-              </button>
-            </div>
 
-  
-           
+                {!isLoading && showResults && filmes.length > 0 && (
+                  <div>
+                    <h4 className="text-sm text-slate-300 mb-3 text-center">Resultado aproximado</h4>
+                    <div className="px-2">
+                      <Carrossel2 obj={filmes} width={44} height={60} titulos />
+                    </div>
+                  </div>
+                )}
+
+                {!isLoading && showResults && filmes.length === 0 && (
+                  <div className="py-8 text-center text-slate-400">
+                    Nenhum filme encontrado para a descrição informada.
+                  </div>
+                )}
+              </div>
+
+              <div className="px-4 py-3 bg-gradient-to-t from-slate-800/60 to-transparent border-t border-white/6">
+                <div className="flex items-center gap-3 max-w-4xl mx-auto">
+                  <input
+                    type="text"
+                    placeholder="Descreva o tipo de filme que você procura..."
+                    className="flex-1 px-4 py-3 rounded-full bg-white/5 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    value={descricao}
+                    onChange={(e) => setDescricao(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
+                  />
+                  <button
+                    onClick={handleSubmit}
+                    disabled={isLoading}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-60"
+                    aria-label="Enviar descrição"
+                  >
+                    {isLoading ? (
+                      <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                    ) : (
+                      <MdSend className="h-5 w-5" />
+                    )}
+                    <span className="hidden sm:inline">Buscar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
