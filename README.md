@@ -1,5 +1,6 @@
 # Kplus
-
+## Como acessar
+[Utilize o link](https://kplus-i3vv.onrender.com)
 ## Objetivo
 O Kplus é uma plataforma de streaming de vídeos (filmes e séries) que oferece uma experiência personalizada para o usuário, incluindo histórico, favoritos, controle de progresso, múltiplos perfis e recomendações inteligentes. O sistema foi desenvolvido para ser escalável, seguro e de fácil manutenção, utilizando boas práticas de arquitetura e tecnologias modernas.
 
