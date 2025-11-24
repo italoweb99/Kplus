@@ -111,7 +111,7 @@ router.get('/get-video-url', authenticateToken, async (req, res) => {
       .digest('hex');
 
     // Criar URL assinada
-    const baseUrl = 'http://localhost:5000/reproduzir/stream';
+    const baseUrl = 'https://kplus-api.onrender.com/reproduzir/stream';
     const signedUrl = `${baseUrl}/${videoPath}?token=${token}&expires=${expirationTime}`;
     res.json({ signedUrl });
   } catch (err) {
