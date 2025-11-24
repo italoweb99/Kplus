@@ -1,9 +1,17 @@
+// carregamento opcional do .env (não quebra se dotenv não estiver instalado)
+try {
+  require('dotenv').config();
+} catch (e) {
+  // dotenv não disponível em produção — ok se variáveis vierem do ambiente
+}
+
 const express = require('express');
 const pool = require('./db');
 const app = express();
 
 const {authenticateToken} = require('./controllers/auth')
-const port = 5000;
+// usa PORT do ambiente (Render define PORT)
+const port = process.env.PORT || 5000;
 const cors = require('cors');
 
 const path = require('path');
@@ -18,13 +26,34 @@ const historicoRoutes = require('./routes/historicoRoutes')
 const reproduzirRoutes = require('./routes/reproduzirRoutes')
 //const axios = require('axios');
 
+// origin configurável por env (defina FRONTEND_ORIGIN em Render)
+const ALLOWED_ORIGIN = process.env.FRONTEND_ORIGIN || process.env.VITE_APP_ORIGIN || '*';
+
+// Configura CORS com suporte a preflight PNA
 const optCors = {
-  origin: '*',
+  origin: ALLOWED_ORIGIN === '*' ? true : ALLOWED_ORIGIN,
   optionsSuccessStatus: 200,
+  credentials: true,
 };
 app.use(cors(optCors));
-// Configurar conexão com o banco de dados PostgreSQL
-//app.use('/videos',express.static(path.join(__dirname,'public/videos')))
+
+// middleware para responder preflight e Access-Control-Allow-Private-Network
+app.options('*', (req, res) => {
+  const origin = req.headers.origin || ALLOWED_ORIGIN;
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Range');
+
+  if (req.headers['access-control-request-private-network']) {
+    res.setHeader('Access-Control-Allow-Private-Network', 'true');
+  }
+  return res.sendStatus(204);
+});
+
+// rota de health check
+app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
+
 app.use('/thumbs', express.static(path.join(__dirname, 'public/thumbs')));
 app.use('/Users',express.static(path.join(__dirname, 'public/Users')))
 app.use(express.json());
