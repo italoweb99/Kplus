@@ -1,30 +1,72 @@
-# Exported from Render on 2025-11-24T04:53:48Z
-version: "1"
-projects:
-- name: My project
-  environments:
-  - name: Production
-    services:
-    - type: web
-      name: kplus
-      runtime: image
-      image:
-        url: docker.io/italoweb99/kplus:latest
-      plan: free
-      region: oregon
-      autoDeployTrigger: commit
-    - type: web
-      name: kplus-api
-      runtime: image
-      image:
-        url: docker.io/italoweb99/kplus-api:latest
-      plan: free
-      envVars:
-      - key: CONNECTIONSTRING
-        sync: false
-      - key: JWTSECRET
-        sync: false
-      - key: GEMINI_API_KEY
-        sync: false
-      region: oregon
-      autoDeployTrigger: commit
+## render.yaml
+# Define a versão do blueprint do Render
+version: 1
+
+# Define os serviços (backend e frontend)
+services:
+  ## 1. Serviço de Backend (API)
+  - type: web # Ou worker/private, mas geralmente é web se for acessível
+    name: kplus-api # Corresponde ao container_name: kplus-api
+    # Configuração de build
+    buildCommand: "" # Comando de build fica dentro do Dockerfile ou é configurado no Render
+    # O Render detecta o Dockerfile na raiz do contexto
+    dockerContext: ./backend # O contexto de build
+    # O Render detecta automaticamente o Dockerfile dentro do contexto
+
+    # Variáveis de ambiente
+    envVars:
+      # O Render não suporta env_file nativamente no render.yaml.
+      # Você precisa adicionar as variáveis de ambiente aqui manualmente
+      # ou gerenciá-las diretamente no painel do Render.
+      # Exemplo (SUBSTITUA PELAS SUAS REAIS VARS):
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000 # A porta interna que o container usa
+      # Adicione todas as variáveis de ./backend/.env aqui
+    
+    # Porta interna que o container expõe
+    port: 5000
+    
+    # Configuração da URL da API (IMPORTANTE: A URL interna do Render)
+    # No Render, outros serviços se referem a este serviço pelo nome: kplus-api
+    # Você precisará configurar o frontend para usar http://kplus-api:5000
+    # para comunicação interna se não estiver usando um serviço privado.
+    # Se for um serviço Web público, o URL interno será o seu hostname.
+
+ 
+  ## 2. Serviço de Frontend (Web)
+  - type: web
+    name: kplus-web # Corresponde ao container_name: kplus-web
+    # Configuração de build
+    dockerContext: ./frontend # O contexto de build
+    # O Render não tem um argumento de build (args) equivalente direto.
+    # Essas variáveis de ambiente (VITE_API_URL, REACT_APP_API_URL) 
+    # precisam ser passadas como envVars para o container APÓS o build, 
+    # se o frontend as estiver consumindo em runtime (o que é incomum 
+    # para frameworks modernos como React/Vite) ou precisam ser injetadas 
+    # no build.
+
+    # Se você precisa que essas variáveis sejam usadas DURANTE o build (que é o padrão para VITE/REACT build),
+    # você precisará ajustar o Dockerfile do frontend para lidar com isso 
+    # ou usar um comando de build explícito.
+
+    # Assumindo que você precisa do URL da API DURANTE o build:
+    # A variável abaixo é a URL que o frontend usará para se comunicar com o backend INTERNAMENTE.
+    envVars:
+      - key: VITE_API_URL
+        value: http://kplus-api:5000 # Use o nome do serviço (kplus-api) e a porta (5000)
+      - key: REACT_APP_API_URL
+        value: http://kplus-api:5000
+      - key: PORT # A porta interna onde o servidor de arquivos estáticos roda (geralmente 80 no nginx)
+        value: 80 
+    
+    # Porta interna que o container expõe (a porta 80, onde o nginx/server do frontend está rodando)
+    port: 80
+    
+    # A porta pública do Render será 443 (HTTPS), e ela irá rotear para a porta 80 do seu container.
+    # Um serviço Web é automaticamente exposto na porta 80/443 do Render.
+    
+    # O Render gerencia dependências de forma diferente (deploy sequencial ou simultâneo).
+    # O `depends_on` não é necessário para o deploy, mas para a comunicação
+    # interna, o uso de `http://kplus-api:5000` resolve a necessidade.
