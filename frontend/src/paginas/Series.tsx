@@ -54,7 +54,7 @@ const Series = () => {
                 >
                   <Link to={`/series/${serie.id_serie}`} className="w-full block rounded-lg overflow-hidden shadow-md">
                     <img
-                      src={`http://localhost:5000${serie.thumb_url}`}
+                      src={`https://kplus-api.onrender.com${serie.thumb_url}`}
                       alt={serie.titulo}
                       className="w-full h-56 object-cover"
                       loading="lazy"

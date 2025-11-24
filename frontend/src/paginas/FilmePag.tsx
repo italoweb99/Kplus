@@ -117,7 +117,7 @@ const FilmePag = () => {
           <div className="flex-shrink-0 w-full lg:w-1/3">
             <div className="rounded-xl overflow-hidden shadow-lg bg-slate-800">
               <img
-                src={`http://localhost:5000${data.thumb_url}`}
+                src={`https://kplus-api.onrender.com${data.thumb_url}`}
                 alt={data.titulo}
                 className="w-full h-auto object-cover"
                 loading="lazy"

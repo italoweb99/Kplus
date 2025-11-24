@@ -116,7 +116,7 @@ const AddUser = ({isEdit=false,onClose,perfil=null}: AddUserProps) =>{
                 aria-label="Selecionar avatar"
               >
                 <img
-                  src={`http://localhost:5000${formData.thumb_url}`}
+                  src={`https://kplus-api.onrender.com${formData.thumb_url}`}
                   alt="avatar"
                   className="h-full w-full object-cover"
                 />

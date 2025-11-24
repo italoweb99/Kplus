@@ -29,14 +29,14 @@ const SearchBox = ({ref, onFocusParam,filmeList}:sbType) =>{
                     <>
                         {filmes.map(item => (
                             <div key={'filme'+item.id} onClick={()=>clickHandle(item, 'filme')} className="flex items-center my-1 transition-all ease-out duration-300 mx-3 cursor-pointer hover:bg-bgpurplehover/80 rounded-lg"  >
-                                <img src={`http://localhost:5000${item.thumb_url}`} className="h-28 w-28 rounded-s-lg"/>
+                                <img src={`https://kplus-api.onrender.com${item.thumb_url}`} className="h-28 w-28 rounded-s-lg"/>
                                 <p className="ml-20 font-medium">{item.titulo}</p>
                                 <span className="ml-4 text-xs text-gray-400 uppercase">Filme</span>
                             </div>
                         ))}
                         {series.map(item => (
                             <div key={'serie'+item.id} onClick={()=>clickHandle(item, 'serie')} className="flex items-center my-1 transition-all ease-out duration-300 mx-3 cursor-pointer hover:bg-bgpurplehover/80 rounded-lg"  >
-                                <img src={`http://localhost:5000${item.thumb_url}`} className="h-28 h-28 object-cover rounded-s-lg"/>
+                                <img src={`https://kplus-api.onrender.com${item.thumb_url}`} className="h-28 h-28 object-cover rounded-s-lg"/>
                                 <p className="ml-20 font-medium">{item.titulo}</p>
                                 <span className="ml-4 text-xs text-gray-400 uppercase">Série</span>
                             </div>

@@ -56,7 +56,7 @@ const Filmes = () => {
                 >
                   <Link to={`/filmes/${filme.id_filme}`} className="w-full block rounded-lg overflow-hidden shadow-md">
                     <img
-                      src={`http://localhost:5000${filme.thumb_url}`}
+                      src={`https://kplus-api.onrender.com${filme.thumb_url}`}
                       alt={filme.titulo}
                       className="w-full h-44 object-cover"
                       loading="lazy"

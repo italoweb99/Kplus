@@ -100,7 +100,7 @@ return(
     {userKey && userData?(
       <div className="relative">
         <div onMouseEnter={()=>setBoxVisibility(true)} onMouseLeave={()=>setBoxVisibility(false)}className="rounded-full overflow-hidden h-10 w-10 flex justify-center items-center">
-        <img src={`http://localhost:5000${userData.thumb_url}`} className="h-full object-cover flex justify-center items-center"/>
+        <img src={`https://kplus-api.onrender.com${userData.thumb_url}`} className="h-full object-cover flex justify-center items-center"/>
       </div>
      {
   (showBox) && (
@@ -132,7 +132,7 @@ return(
       </div>
     ):(
       <div onClick={()=>nav('/login')} className="rounded-full overflow-hidden h-10 w-10 flex justify-center items-center">
-        <img src={`http://localhost:5000/Users/iconeDefault_user.svg`} className="h-full object-cover flex justify-center items-center"/>
+        <img src={`https://kplus-api.onrender.com/Users/iconeDefault_user.svg`} className="h-full object-cover flex justify-center items-center"/>
       </div>
     )
     }

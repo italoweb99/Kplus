@@ -65,7 +65,7 @@ const SearchPage = () => {
                   >
                     <Link to={`/filmes/${item.id}`} className="w-full block rounded-lg overflow-hidden shadow-md">
                       <img
-                        src={`http://localhost:5000${item.thumb_url}`}
+                        src={`https://kplus-api.onrender.com${item.thumb_url}`}
                         alt={item.titulo}
                         className="w-full h-44 object-cover"
                         loading="lazy"
@@ -80,7 +80,7 @@ const SearchPage = () => {
                   >
                     <Link to={`/series/${item.id}`} className="w-full block rounded-lg overflow-hidden shadow-md">
                       <img
-                        src={`http://localhost:5000${item.thumb_url}`}
+                        src={`https://kplus-api.onrender.com${item.thumb_url}`}
                         alt={item.titulo}
                         className="w-full h-44 object-cover"
                         loading="lazy"

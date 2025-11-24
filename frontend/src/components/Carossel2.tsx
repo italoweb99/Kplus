@@ -141,7 +141,7 @@ const Carrossel2 = ({
                       <>
                         <Link to={`/reproducao/filme/${item.id}`} key={`${item.tipo}-${item.id}`}>
                           <ThumbFrame
-                            src={`http://localhost:5000${item.thumb_url}`}
+                            src={`https://kplus-api.onrender.com${item.thumb_url}`}
                             tempo_assist={item.tempo_assist}
                             duracao={item.duracao}
                             width={width}
@@ -161,7 +161,7 @@ const Carrossel2 = ({
                         )}
                         <Link to={`/filmes/${item.id}`} key={`${item.tipo}-${item.id}`}>
                           <ThumbFrame
-                            src={`http://localhost:5000${item.thumb_url}`}
+                            src={`https://kplus-api.onrender.com${item.thumb_url}`}
                             tempo_assist={item.tempo_assist}
                             duracao={item.duracao}
                             width={width}
@@ -182,7 +182,7 @@ const Carrossel2 = ({
                     {contAssist ? (
                       <Link to={`reproducao/serie/${item.id}`} key={`${item.tipo}-${item.id}`}>
                         <ThumbFrame
-                          src={`http://localhost:5000${item.thumb_url}`}
+                          src={`https://kplus-api.onrender.com${item.thumb_url}`}
                           tempo_assist={item.tempo_assist}
                           duracao={item.duracao}
                           width={width}
@@ -201,7 +201,7 @@ const Carrossel2 = ({
                         )}
                         <Link to={`/series/${item.id}`} key={`${item.tipo}-${item.id}`}>
                           <ThumbFrame
-                            src={`http://localhost:5000${item.thumb_url}`}
+                            src={`https://kplus-api.onrender.com${item.thumb_url}`}
                             tempo_assist={item.tempo_assist}
                             duracao={item.duracao}
                             width={width}

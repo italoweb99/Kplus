@@ -61,7 +61,7 @@ const Carrossel = ({height=150,time = 10000}) =>{
                    <Link to={`/filmes/${img.id}`} key ={img.id}>
                     <div>
                     <img 
-                    src={`http://localhost:5000${img.thumb_url}`} 
+                    src={`https://kplus-api.onrender.com${img.thumb_url}`} 
                     onLoad={()=>setIsLoading(false)}
                     style={{
                        width: '100vw',

@@ -100,11 +100,11 @@ const SelectTemp = ({ nTemp, user, isLogedin }: SelectTempProps) => {
               <div className="flex-shrink-0">
                 {isLogedin ? (
                   <Link to={`/reproducao/serie/${ep.id_ep}`} className="block">
-                    <ThumbFrame src={`http://localhost:5000${ep.thumb_url}`} tempo_assist={ep.tempo_assist} duracao={ep.duracao} />
+                    <ThumbFrame src={`https://kplus-api.onrender.com${ep.thumb_url}`} tempo_assist={ep.tempo_assist} duracao={ep.duracao} />
                   </Link>
                 ) : (
                   <Link to="/login" className="block">
-                    <ThumbFrame src={`http://localhost:5000${ep.thumb_url}`} tempo_assist={ep.tempo_assist} duracao={ep.duracao} />
+                    <ThumbFrame src={`https://kplus-api.onrender.com${ep.thumb_url}`} tempo_assist={ep.tempo_assist} duracao={ep.duracao} />
                   </Link>
                 )}
               </div>

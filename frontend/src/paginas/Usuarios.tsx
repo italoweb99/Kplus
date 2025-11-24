@@ -115,7 +115,7 @@ const Usuario = () => {
 
                     <div className={`h-40 w-40 rounded-full overflow-hidden flex items-center justify-center transition-transform transform group-hover:scale-105 ${showBorder ? 'ring-4 ring-white' : ''}`}>
                       <img
-                        src={`http://localhost:5000${u.thumb_url}`}
+                        src={`https://kplus-api.onrender.com${u.thumb_url}`}
                         alt={u.nome}
                         className="object-cover h-full w-full"
                       />

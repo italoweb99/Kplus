@@ -68,7 +68,7 @@ const SelectUserThumb = ({ onClose }: Props) => {
               >
                 <div className="h-16 w-16 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                   <img
-                    src={`http://localhost:5000${t.url}`}
+                    src={`https://kplus-api.onrender.com${t.url}`}
                     alt={t.descricao || `icone-${t.id_user_thumb}`}
                     className="h-full  w-full object-cover"
                   />
