@@ -4,10 +4,11 @@ services:
   - type: web
     name: kplus-api
     dockerContext: ./backend
-    port: 5000
+    
     envVars:
       - key: PORT
         value: 5000
+    port: 5000
 
 ---
 - type: web
