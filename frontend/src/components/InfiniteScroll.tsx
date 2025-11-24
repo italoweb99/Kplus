@@ -22,12 +22,20 @@ function InfiniteScroll<T>({ fetchData, renderItem, hasMore, initialPage = 1, cl
   }, [className, initialPage]);
 
   useEffect(() => {
-    let cancelled = false;
+      let cancelled = false;
     const load = async () => {
+    
       setLoading(true);
+      try{
       const newItems = await fetchData(page);
       setItems(prev => page === 1 ? newItems : [...prev, ...newItems]);
-      setLoading(false);
+      }catch(err){
+        if (!cancelled) console.log(err)
+      } finally {
+    if(!cancelled) setLoading(false)
+    
+      }
+     
     };
     load();
     return () => { cancelled = true; };

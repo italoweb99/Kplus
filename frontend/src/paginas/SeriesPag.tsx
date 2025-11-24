@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectTemp from "../components/SelectTemp";
 import axiosInstance from "../axiosConfig";
-import { FaHeart, FaRegHeart, FaArrowLeft, FaPlay } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaArrowLeft} from "react-icons/fa";
 
 interface Series {
   titulo: string;
