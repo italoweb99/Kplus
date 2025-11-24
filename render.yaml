@@ -1,31 +1,23 @@
-## render.yaml
+---
 version: 1
-
 services:
-  ## 1. Serviço de Backend (API)
   - type: web
     name: kplus-api
     dockerContext: ./backend
+    port: 5000
     envVars:
-      # A chave 'PORT' aqui é a variável de ambiente (VAI DENTRO de envVars)
       - key: PORT
-        value: 5000 
-    
-    # A chave 'port' aqui DEFINE A PORTA INTERNA DO CONTAINER (VAI NO NÍVEL DE 'name')
-    port: 5000 # <-- ESTE É O CAMPO 'port' CORRETO
-    
-  ---
-  ## 2. Serviço de Frontend (Web)
-  - type: web
-    name: kplus-web
-    dockerContext: ./frontend
-    envVars:
-      - key: VITE_API_URL
-        value: http://kplus-api:5000
-      - key: REACT_APP_API_URL
-        value: http://kplus-api:5000
-      - key: PORT 
-        value: 80 # Porta onde o servidor web/nginx roda internamente
+        value: 5000
 
-    # A chave 'port' aqui DEFINE A PORTA INTERNA DO CONTAINER
-    port: 80 # <-- ESTE É O CAMPO 'port' CORRETO
+---
+- type: web
+  name: kplus-web
+  dockerContext: ./frontend
+  port: 80
+  envVars:
+    - key: VITE_API_URL
+      value: http://kplus-api:5000
+    - key: REACT_APP_API_URL
+      value: http://kplus-api:5000
+    - key: PORT
+      value: 80
