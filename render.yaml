@@ -37,7 +37,7 @@ services:
   ---
   ## 2. Serviço de Frontend (Web)
   - type: web
-    name: kplus-web # Corresponde ao container_name: kplus-web
+    name: kplus-web 
     # Configuração de build
     dockerContext: ./frontend # O contexto de build
     # O Render não tem um argumento de build (args) equivalente direto.
